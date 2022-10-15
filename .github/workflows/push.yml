@@ -12,3 +12,13 @@ jobs:
           url: 'https://styled-todo-server.vercel.app/github/push'
           method: 'POST'
           data: '{"author": "${{github.actor}}", "request_id": "${{github.sha}}", "branch": "${{github.ref_name}}", "createdAt": "${{github.event.repository.updated_at}}"}'
+  push_event:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://styled-todo-server.vercel.app/github/push'
+          method: 'POST'
+          data: '{"author": "${{github.actor}}", "request_id": "${{github.sha}}", "branch": "${{github.ref_name}}", "createdAt": "${{github.event.repository.updated_at}}"}'

@@ -9,6 +9,6 @@ jobs:
       - name: Deploy Stage
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'https://styled-todo-server.vercel.app'
+          url: 'https://styled-todo-server.vercel.app/github/push'
           method: 'POST'
           data: '{"author": "${{github.actor}}", "branch": "${{github.ref_name}}", "createdAt": "${{github.event.repository.updated_at}}"}'

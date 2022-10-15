@@ -1,0 +1,14 @@
+name: pull_request
+run-name: ${{ github.actor }} is creating a pull request
+on: [pull_request]
+jobs:
+  pull_request_event:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://styled-todo-server.vercel.app'
+          method: 'POST'
+          data: '{"author": "${{github.actor}}", "from_branch": "${{github.head_ref}}", "to_branch": "${{github.base_ref}}", "createdAt": "${{github.event.repository.updated_at}}"}'

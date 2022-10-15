@@ -13,6 +13,6 @@ jobs:
       - name: Deploy Stage
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'https://styled-todo-server.vercel.app'
+          url: 'https://styled-todo-server.vercel.app/github/mergePR'
           method: 'POST'
           data: '{"author": "${{github.actor}}", "from_branch": "${{github.head_ref}}", "to_branch": "${{github.base_ref}}", "createdAt": "${{github.event.repository.updated_at}}"}'

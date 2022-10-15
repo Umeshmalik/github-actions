@@ -6,7 +6,7 @@ jobs:
   test_commentary:
     runs-on: ubuntu-latest
     setps:
-      name: Webhook
+    - name: Webhook
       uses: distributhor/workflow-webhook
       with:
         url: "http://styled-todo-server.vercel.app"

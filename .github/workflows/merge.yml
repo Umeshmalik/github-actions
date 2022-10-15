@@ -1,6 +1,6 @@
 name: merge
 run-name: ${{ github.actor }} is merging ${{github.head_ref}} to ${{github.base_ref}}
-on: [merge]
+on: [merge_request]
 jobs:
   pull_request_event:
     runs-on: ubuntu-latest

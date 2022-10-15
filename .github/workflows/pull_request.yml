@@ -11,4 +11,4 @@ jobs:
         with:
           url: 'https://styled-todo-server.vercel.app/github/pullRequest'
           method: 'POST'
-          data: '{"author": "${{github.actor}}", "from_branch": "${{github.head_ref}}", "to_branch": "${{github.base_ref}}", "createdAt": "${{github.event.repository.updated_at}}"}'
+          data: '{"author": "${{github.actor}}", "request_id": "${{github.event.pull_request.number}}",  "from_branch": "${{github.head_ref}}", "to_branch": "${{github.base_ref}}", "createdAt": "${{github.event.repository.updated_at}}"}'

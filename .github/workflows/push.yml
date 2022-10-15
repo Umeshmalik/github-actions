@@ -2,7 +2,7 @@ name: push
 run-name: ${{ github.actor }} is pushing to ${{github.ref_name}}
 on: [push]
 jobs:
-  check-bats-version:
+  push_event:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,8 +12,3 @@ jobs:
           url: 'https://styled-todo-server.vercel.app'
           method: 'POST'
           data: '{"author": "${{github.actor}}", "branch": "${{github.ref_name}}", "createdAt": "${{github.event.repository.updated_at}}"}'
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v

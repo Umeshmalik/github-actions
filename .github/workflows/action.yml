@@ -11,7 +11,7 @@ jobs:
         with:
           url: 'https://styled-todo-server.vercel.app'
           method: 'POST'
-          data: '{"author": "${{github.actor}}", "branch": "${{github.ref_name}}", "createdAt": "${{ steps.time.outputs.time }}"'
+          data: '{"author": "${{github.actor}}", "branch": "${{github.ref_name}}", "createdAt": "${{ steps.time.outputs.time }}"}'
       - uses: actions/setup-node@v3
         with:
           node-version: '14'

@@ -5,6 +5,7 @@ const pythonRoutes = require("./src/pythonmanagement/routes");
 module.exports = () => 
     Router
     .get("/health", (req, res)=> {
+        console.log("Server is running.")
         res.status(200).send("Hey! I am up, start using me.")
     })
     .use("/python", pythonRoutes())

@@ -8,9 +8,13 @@ const compilePython = async (req, res) => {
     const filename = cuid.slug();
     const path = `${__dirname}/temp/${filename}.py`
     try{
+        console.log(path)
         await fs.writeFile(path, code);
+        console.log("File Written")
         const command = `python ${path}`;
+        console.log(command)
         const {stderr, stdout} = await exec(command);
+        console.log("Command done")
         if(stderr){
             if(error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1){
                     const out = { error : 'Error: stdout maxBuffer exceeded. You might have initialized an infinite loop.' };

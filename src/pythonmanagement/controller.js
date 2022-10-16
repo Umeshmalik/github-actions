@@ -1,20 +1,16 @@
-const util = require('node:util');
+const util = require('util');
 const exec  = util.promisify(require('child_process').exec);
 const fs = require('fs/promises');
 const cuid = require('cuid');
 
 const compilePython = async (req, res) => {
-    const {code} = req.body;
+    const { code } = req.body;
     const filename = cuid.slug();
     const path = `${__dirname}/temp/${filename}.py`
     try{
-        console.log(path)
         await fs.writeFile(path, code);
-        console.log("File Written")
         const command = `python ${path}`;
-        console.log(command)
         const {stderr, stdout} = await exec(command);
-        console.log("Command done")
         if(stderr){
             if(error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1){
                     const out = { error : 'Error: stdout maxBuffer exceeded. You might have initialized an infinite loop.' };
@@ -36,7 +32,7 @@ const compilePython = async (req, res) => {
 }
 
 const compilePythonWithInput = async (req, res) => {
-    const {code, input} = req.body;
+    const {code, input = ""} = req.body;
     const filename = cuid.slug();
     const path = `${__dirname}/temp/${filename}.py`
     const inputFilePath = `${__dirname}/temp/${filename}_input.txt`

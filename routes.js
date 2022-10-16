@@ -4,7 +4,7 @@ const pythonRoutes = require("./src/pythonmanagement/routes");
 
 module.exports = () => 
     Router
-    .get("/", (req, res)=> {
+    .get("/health", (req, res)=> {
         res.status(200).send("Hey! I am up, start using me.")
     })
     .use("/python", pythonRoutes())

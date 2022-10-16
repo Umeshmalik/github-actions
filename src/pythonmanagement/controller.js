@@ -8,7 +8,6 @@ const compilePython = async (req, res) => {
     const filename = cuid.slug();
     const path = `${__dirname}/temp/${filename}.py`
     try{
-    
         await fs.writeFile(path, code);
         const command = `python ${path}`;
         const {stderr, stdout} = await exec(command);
@@ -26,7 +25,7 @@ const compilePython = async (req, res) => {
         const out = { output : stdout};
         res.status(200).json(out);
     }catch(err){
-        throw new Error(err)
+        res.status(500).json(err);
     }finally{
         console.log(`INFO: ${filename}.py successfully deleted!`);
         await fs.unlink(path)
@@ -34,68 +33,36 @@ const compilePython = async (req, res) => {
 }
 
 const compilePythonWithInput = async (req, res) => {
-    const {code ,input} = req.body;
-    // try{
-    //     var filename = cuid.slug();
-    //     path = './temp/';
-    
-    //     fs.writeFile( path  +  filename +'.py' , code  , function(err ){			
-    //         if(exports.stats)
-    //         {
-    //             if(err)
-    //             console.log('ERROR: '.red + err);
-    //             else
-    //             console.log('INFO: '.green + filename +'.py created');	
-    //         }
-    //         if(!err)
-    //         {
-    
-    //             fs.writeFile(path + filename + 'input.txt' , input , function(err){
-    //                 if(exports.stats)
-    //                 {
-    //                     if(err)
-    //                     console.log('ERROR: '.red + err);
-    //                     else
-    //                     console.log('INFO: '.green + filename +'input.txt created');	
-    //                 }
-    //                 if(!err)
-    //                 {
-    //                     var command = 'python ' + path + filename +'.py < ' + path + filename +'input.txt ' ;
-    //                     exec( command , function ( error , stdout , stderr ){
-    //                         if(error)
-    //                         {
-    //                             if(error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1)
-    //                             {
-    //                                 var out = { error : 'Error: stdout maxBuffer exceeded. You might have initialized an infinite loop.' };
-    //                                 res.status(400).json(out);
-    //                             }
-    //                             else
-    //                             {
-    //                                 if(exports.stats)
-    //                                 {
-    //                                     console.log('INFO: '.green + filename + '.py contained an error while executing');
-    //                                 }
-    //                                 var out = { error : stderr };
-    //                                 res.status(400).json(out);
-    //                             }													
-    //                         }
-    //                         else
-    //                         {
-    //                             if(exports.stats)
-    //                             {
-    //                                 console.log('INFO: '.green + filename + '.py successfully executed !');
-    //                             }
-    //                             var out = { output : stdout};
-    //                             res.status(200).json(out);
-    //                         }
-    //                     });						
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }catch(err){
-    //     throw new Error(err);
-    // }
+    const {code, input} = req.body;
+    const filename = cuid.slug();
+    const path = `${__dirname}/temp/${filename}.py`
+    const inputFilePath = `${__dirname}/temp/${filename}_input.txt`
+    try{
+        await fs.writeFile(path, code);
+        await fs.writeFile(inputFilePath, input)
+        const command =  `python ${path} < ${inputFilePath}`;
+        const {stderr, stdout} = await exec(command);
+        if(stderr){
+            if(error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1){
+                    const out = { error : 'Error: stdout maxBuffer exceeded. You might have initialized an infinite loop.' };
+                    res.status(400).json(out);
+            }else{
+                console.log(`INFO: ${filename}.py contained an error while executing`);
+                const out = { error : stderr };
+                res.status(200).json(out)								
+            }
+        }
+        console.log(`INFO: ${filename}.py successfully executed !`);
+        const out = { output : stdout};
+        res.status(200).json(out);
+    }catch(err){
+        res.status(500).json(err);
+    }finally{
+        console.log(`INFO: ${filename}.py successfully deleted!`);
+        await fs.unlink(path);
+        console.log(`INFO: ${filename}_input.txt successfully deleted!`);
+        await fs.unlink(inputFilePath);
+    }
 }
 
 module.exports = {

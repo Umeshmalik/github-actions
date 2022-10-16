@@ -3,8 +3,10 @@ const controller = require("./controller");
 
 module.exports = () => {
     Router
-        .route('/python')
-        .post(controller?.compilePython)
+        .route('/').post(controller?.compilePython)
+    
+    Router
+        .route("/withInput").post(controller.compilePythonWithInput)
     
     return Router;
 }

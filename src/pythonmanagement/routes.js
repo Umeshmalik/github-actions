@@ -6,7 +6,7 @@ module.exports = () => {
         .route('/').post(controller?.compilePython)
     
     Router
-        .route("/withInput").post(controller.compilePythonWithInput)
+        .route("/withInput").post(controller?.compilePythonWithInput)
     
     return Router;
 }

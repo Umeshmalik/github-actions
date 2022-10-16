@@ -27,12 +27,11 @@ const compilePython = async (req, res) => {
         }
         console.log(`INFO: ${filename}.py successfully executed !`);
         const out = { output : stdout};
+        console.log(`INFO: ${filename}.py successfully deleted!`);
+        await fs.unlink(path)
         res.status(200).json(out);
     }catch(err){
         res.status(500).json(err);
-    }finally{
-        console.log(`INFO: ${filename}.py successfully deleted!`);
-        await fs.unlink(path)
     }
 }
 
@@ -58,14 +57,13 @@ const compilePythonWithInput = async (req, res) => {
         }
         console.log(`INFO: ${filename}.py successfully executed !`);
         const out = { output : stdout};
-        res.status(200).json(out);
-    }catch(err){
-        res.status(500).json(err);
-    }finally{
         console.log(`INFO: ${filename}.py successfully deleted!`);
         await fs.unlink(path);
         console.log(`INFO: ${filename}_input.txt successfully deleted!`);
         await fs.unlink(inputFilePath);
+        res.status(200).json(out);
+    }catch(err){
+        res.status(500).json(err);
     }
 }
 

@@ -2,8 +2,9 @@ const path = require('path');
 const express = require('express');
 const Router = require("express").Router();
 
-const pythonRoutes = require("./src/pythonmanagement/routes");
-const nodeRoutes = require("./src/nodemanagement/routes");
+const pythonRoutes = require("./src/python/routes");
+const nodeRoutes = require("./src/node/routes");
+const javaRoutes = require("./src/java/routes");
 
 module.exports = () => 
     Router
@@ -13,6 +14,7 @@ module.exports = () =>
     })
     .use("/python", pythonRoutes())
     .use("/node", nodeRoutes())
+    .use("/java", javaRoutes())
     .all('*', (req, res)=> {
         res.status(404).send(`${req.path} doesn't exist. Please re-verify once.`);
     })
